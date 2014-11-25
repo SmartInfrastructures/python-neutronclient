@@ -230,6 +230,10 @@ class Client(object):
     firewall_path = "/fw/firewalls/%s"
     net_partitions_path = "/net-partitions"
     net_partition_path = "/net-partitions/%s"
+    
+    #qos
+    qos_path = "/qoses"
+    qoses_path = "/qoses/%s"
 
     # API has no way to report plurals, so we have to hard code them
     EXTED_PLURALS = {'routers': 'router',
@@ -255,6 +259,8 @@ class Client(object):
                      'metering_label_rules': 'metering_label_rule',
                      'net_partitions': 'net_partition',
                      'packet_filters': 'packet_filter',
+                     
+                     'qoses': 'qos',
                      }
     # 8192 Is the default max URI len for eventlet.wsgi.server
     MAX_URI_LEN = 8192
@@ -1194,6 +1200,28 @@ class Client(object):
     def delete_packet_filter(self, packet_filter_id):
         """Delete the specified packet filter."""
         return self.delete(self.packet_filter_path % packet_filter_id)
+    
+    ##QOS
+    @APIParamsCall
+    def delete_qos(self, qos):
+        return self.delete(self.qoses_path % (qos))
+
+    @APIParamsCall
+    def create_qos(self, body=None):
+        return self.post(self.qos_path, body=body)
+
+    @APIParamsCall
+    def list_qoses(self, retrieve_all=True, **_params):
+        return self.list('qoses', self.qos_path, retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_qos(self, qos, **_params):
+        return self.get(self.qoses_path % (qos), params=_params)
+
+    @APIParamsCall
+    def update_qos(self, qos, body=None):
+        """Updates a firewall."""
+        return self.put(self.qos_path % (qos), body=body)
 
     def __init__(self, **kwargs):
         """Initialize a new client for the Neutron v2.0 API."""

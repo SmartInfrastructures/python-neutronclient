@@ -73,6 +73,7 @@ from neutronclient.neutron.v2_0.vpn import ipsecpolicy
 from neutronclient.neutron.v2_0.vpn import vpnservice
 from neutronclient.version import __version__
 
+from neutronclient.neutron.v2_0.qos import qos
 
 VERSION = '2.0'
 NEUTRON_API_VERSION = '2.0'
@@ -296,6 +297,13 @@ COMMAND_V2 = {
     'nec-packet-filter-create': packetfilter.CreatePacketFilter,
     'nec-packet-filter-update': packetfilter.UpdatePacketFilter,
     'nec-packet-filter-delete': packetfilter.DeletePacketFilter,
+ 
+    #qos   
+    'qos-create': qos.CreateQoS,
+    'qos-delete': qos.DeleteQoS,
+    'qos-list': qos.ListQoS,
+    'qos-show': qos.ShowQoS,
+    'qos-update': qos.UpdateQoS,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
