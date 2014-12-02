@@ -59,12 +59,17 @@ class UpdateQoS(neutronV20.UpdateCommand):
                 body[self.resource]['policies'][args[0]] = args[1]
         return body
 
+def _check_true_false(value):
+    if value.encode('UTF-8').lower() == "true":
+        return "true"
+    else:
+        return "false"
 
 class CreateQoS(neutronV20.CreateCommand):
     resource = 'qos'
     log = logging.getLogger(__name__ + '.CreateQoS')
     
-    policy_type_allowed = ['dscp', 'ingressrate', 'egressrate', 'burstrate']
+    policy_type_allowed = ['dscp', 'ingress_rate', 'egress_rate', 'burst_rate']
     
     def _validate_policy(self, policies):
         for parg in policies:
@@ -74,7 +79,7 @@ class CreateQoS(neutronV20.CreateCommand):
 
     def add_known_arguments(self, parser):
         parser.add_argument('--type',
-                            help="QoS Type", choices=['dscp', 'ingressrate', 'egressrate', 'burstrate'])
+                            help="QoS Type", choices=['dscp', 'ingress_rate', 'egress_rate', 'burst_percent'])
         parser.add_argument('--policies',
                             help='Set of policies for a QoS. Avaible policies: dscp, ingressrate, egressrate, burstrate', nargs='*')
         parser.add_argument('--description', help="Description for the QoS")
@@ -91,7 +96,7 @@ class CreateQoS(neutronV20.CreateCommand):
             
         if parsed_args.policies:
             #try:
-            #    self._validate_policy(parsed_args.policies)
+            self._validate_policy(parsed_args.policies)
             #except:
             #    return {}
             for parg in parsed_args.policies:
@@ -106,7 +111,8 @@ class CreateQoS(neutronV20.CreateCommand):
         if parsed_args.tenant_id:
             body[self.resource].update({'tenant_id': parsed_args.tenant_id})
         if parsed_args.default:
-            body[self.resource]['default'] = "True" if parsed_args.default == "true" else "False" 
+            body[self.resource]['default'] = _check_true_false(parsed_args.default[0])
+            #body[self.resource]['default'] = "True" if parsed_args.default[0].encode('UTF-8')== "true" else "False" 
         if parsed_args.visible:
-            body[self.resource]['visible'] = "True" if parsed_args.visible == "true" else "False"
+            body[self.resource]['visible'] = _check_true_false(parsed_args.visible[0])
         return body
