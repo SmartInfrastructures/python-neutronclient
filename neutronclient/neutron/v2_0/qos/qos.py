@@ -32,7 +32,8 @@ class ListQoS(neutronV20.ListCommand):
     log = logging.getLogger(__name__ + '.ListQoS')
 
     list_columns = [
-        'id', 'description', 'type', 'policy'
+        'id', 'name', 'description', 'default', 
+        'visible', 'policies', 
     ]
 
 
