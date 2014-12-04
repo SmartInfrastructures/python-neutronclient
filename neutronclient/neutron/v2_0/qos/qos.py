@@ -31,9 +31,7 @@ class ListQoS(neutronV20.ListCommand):
     resource = 'qos'
     log = logging.getLogger(__name__ + '.ListQoS')
 
-    list_columns = [
-        'id', 'description', 'type', 'policy'
-    ]
+    list_columns = ['id', 'name', 'description']
 
 
 class ShowQoS(neutronV20.ShowCommand):
@@ -78,8 +76,8 @@ class CreateQoS(neutronV20.CreateCommand):
                 raise exceptions.NeutronClientException(message="%s is not a valid policy" % args[0])
 
     def add_known_arguments(self, parser):
-        parser.add_argument('--type',
-                            help="QoS Type", choices=['dscp', 'ingress_rate', 'egress_rate', 'burst_percent'])
+        #parser.add_argument('--type',
+        #                    help="QoS Type", choices=['dscp', 'ingress_rate', 'egress_rate', 'burst_percent'])
         parser.add_argument('--policies',
                             help='Set of policies for a QoS. Avaible policies: dscp, ingressrate, egressrate, burstrate', nargs='*')
         parser.add_argument('--description', help="Description for the QoS")
@@ -102,8 +100,8 @@ class CreateQoS(neutronV20.CreateCommand):
             for parg in parsed_args.policies:
                 args = parg.split('=')
                 body[self.resource]['policies'][args[0]] = args[1]
-        if parsed_args.type:
-            body[self.resource]['type'] = parsed_args.type
+       # if parsed_args.type:
+       #     body[self.resource]['type'] = parsed_args.type
         if parsed_args.description:
             body[self.resource]['description'] = parsed_args.description
         if parsed_args.name:
