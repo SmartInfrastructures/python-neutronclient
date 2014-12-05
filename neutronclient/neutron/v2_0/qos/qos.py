@@ -67,7 +67,7 @@ class CreateQoS(neutronV20.CreateCommand):
     resource = 'qos'
     log = logging.getLogger(__name__ + '.CreateQoS')
     
-    policy_type_allowed = ['dscp', 'ingress_rate', 'egress_rate', 'burst_rate']
+    policy_type_allowed = ['dscp', 'ingress_rate', 'egress_rate', 'burst_percent']
     
     def _validate_policy(self, policies):
         for parg in policies:
@@ -79,7 +79,7 @@ class CreateQoS(neutronV20.CreateCommand):
         #parser.add_argument('--type',
         #                    help="QoS Type", choices=['dscp', 'ingress_rate', 'egress_rate', 'burst_percent'])
         parser.add_argument('--policies',
-                            help='Set of policies for a QoS. Avaible policies: dscp, ingressrate, egressrate, burstrate', nargs='*')
+                            help='Set of policies for a QoS. Avaible policies: dscp, ingress_rate, egress_rate, burst_percent', nargs='*')
         parser.add_argument('--description', help="Description for the QoS")
         parser.add_argument('--default', help="Ask to Matteo", 
                             nargs=1, choices=['true', 'false'], required=True )
