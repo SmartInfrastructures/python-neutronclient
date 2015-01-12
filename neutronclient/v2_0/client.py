@@ -1224,7 +1224,16 @@ class Client(object):
     @APIParamsCall
     def update_qos(self, qos, body=None):
         """Updates a firewall."""
-        return self.put(self.qos_path % (qos), body=body)
+        return self.put(self.qoses_path % (qos), body=body)
+    
+    @APIParamsCall
+    def create_qos_associate(self, qos_id, body=None):
+        #return self.post(self.qos_path, body=body)
+        return self.put(self.qoses_path % (qos_id), body=body)
+        
+    @APIParamsCall
+    def list_qos_associates(self, retrieve_all=True, **_params):
+        return self.list('qoses', self.qos_path, retrieve_all, **_params)
 
     def __init__(self, **kwargs):
         """Initialize a new client for the Neutron v2.0 API."""

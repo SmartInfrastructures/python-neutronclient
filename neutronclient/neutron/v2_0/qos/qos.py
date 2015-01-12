@@ -44,19 +44,6 @@ class DeleteQoS(neutronV20.DeleteCommand):
     log = logging.getLogger(__name__ + '.DeleteQoS')
 
 
-class UpdateQoS(neutronV20.UpdateCommand):
-    resource = 'qos'
-    log = logging.getLogger(__name__ + '.UpdateQoS')
-
-    def args2body(self, parsed_args):
-        body = {self.resource: {}}
-        body[self.resource]['policies'] = {}
-        if parsed_args.policies:
-            for parg in parsed_args.policies:
-                args = parg.split('=')
-                body[self.resource]['policies'][args[0]] = args[1]
-        return body
-
 def _check_true_false(value):
     if value.encode('UTF-8').lower() == "true":
         return "true"
@@ -113,4 +100,41 @@ class CreateQoS(neutronV20.CreateCommand):
             #body[self.resource]['default'] = "True" if parsed_args.default[0].encode('UTF-8')== "true" else "False" 
         if parsed_args.visible:
             body[self.resource]['visible'] = _check_true_false(parsed_args.visible[0])
+        return body
+    
+class UpdateQoS(neutronV20.UpdateCommand):
+    resource = 'qos'
+    log = logging.getLogger(__name__ + '.UpdateQoS')
+    
+    def add_known_arguments(self, parser):
+        parser.add_argument('--policies',
+                            help='Set of policies for a QoS. Avaible policies: dscp, ingress_rate, egress_rate, burst_percent', nargs='*')
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}}
+        body[self.resource]['policies'] = {}
+        if parsed_args.policies:
+            for parg in parsed_args.policies:
+                args = parg.split('=')
+                body[self.resource]['policies'][args[0]] = args[1]
+        return body
+    
+class QosAssociate(neutronV20.UpdateCommand):
+    resource = 'qos'
+    
+    def add_known_arguments(self, parser):
+        parser.add_argument('--tenant',
+                        help='Tenant id to associate with qos', required=True)
+#        parser.add_argument('--qos',
+#                        help='Qos id to associate with tenant', required=True)
+        return parser
+        
+    def args2body(self, parsed_args):
+        body = {self.resource: {}}
+#        body[self.resource]['associate'] = None
+#        if parsed_args.qos:
+#            body[self.resource]['qos_id'] = parsed_args.qos
+        if parsed_args.tenant:
+            body[self.resource]['tenant'] = parsed_args.tenant
+
         return body

@@ -304,6 +304,7 @@ COMMAND_V2 = {
     'qos-list': qos.ListQoS,
     'qos-show': qos.ShowQoS,
     'qos-update': qos.UpdateQoS,
+    'qos-associate': qos.QosAssociate,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
