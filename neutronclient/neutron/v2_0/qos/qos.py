@@ -26,7 +26,6 @@ class ValueNotValid(exceptions.NeutronCLIError):
     message = ("Value %(value) for %(policy) invalid")
 
 
-
 class ListQoS(neutronV20.ListCommand):
     resource = 'qos'
     log = logging.getLogger(__name__ + '.ListQoS')
@@ -70,7 +69,7 @@ class CreateQoS(neutronV20.CreateCommand):
         parser.add_argument('--description', help="Description for the QoS")
         parser.add_argument('--default', help="Ask to Matteo", 
                             nargs=1, choices=['true', 'false'], required=True )
-        parser.add_argument('--visible', help="Ask to Matteo", 
+        parser.add_argument('--public', help="Visible to all", 
                             nargs=1, choices=['true', 'false'], required=True )
         parser.add_argument('--name', help="Name of QoS", required=True)
 
@@ -98,8 +97,8 @@ class CreateQoS(neutronV20.CreateCommand):
         if parsed_args.default:
             body[self.resource]['default'] = _check_true_false(parsed_args.default[0])
             #body[self.resource]['default'] = "True" if parsed_args.default[0].encode('UTF-8')== "true" else "False" 
-        if parsed_args.visible:
-            body[self.resource]['visible'] = _check_true_false(parsed_args.visible[0])
+        if parsed_args.public:
+            body[self.resource]['public'] = _check_true_false(parsed_args.public[0])
         return body
     
 class UpdateQoS(neutronV20.UpdateCommand):
