@@ -1216,6 +1216,10 @@ class Client(object):
     @APIParamsCall
     def list_qoses(self, retrieve_all=True, **_params):
         return self.list('qoses', self.qos_path, retrieve_all, **_params)
+        
+    @APIParamsCall
+    def list_qosassociates(self, retrieve_all=True, **_params):
+        return self.list('qosassociates', "/qosassociates", retrieve_all, **_params)
 
     @APIParamsCall
     def show_qos(self, qos, **_params):

@@ -130,10 +130,32 @@ class QosAssociate(neutronV20.UpdateCommand):
         
     def args2body(self, parsed_args):
         body = {self.resource: {}}
-#        body[self.resource]['associate'] = None
-#        if parsed_args.qos:
-#            body[self.resource]['qos_id'] = parsed_args.qos
+        body[self.resource]["association"] = "associate"
         if parsed_args.tenant:
             body[self.resource]['tenant'] = parsed_args.tenant
 
         return body
+
+class QosDisassociate(neutronV20.UpdateCommand):
+    resource = 'qos'
+    
+    def add_known_arguments(self, parser):
+        parser.add_argument('--tenant',
+                        help='Tenant id to disassociate with qos', required=True)
+#        parser.add_argument('--qos',
+#                        help='Qos id to associate with tenant', required=True)
+        return parser
+        
+    def args2body(self, parsed_args):
+        body = {self.resource: {}}
+        body[self.resource]["association"] = "disassociate"
+        if parsed_args.tenant:
+            body[self.resource]['tenant'] = parsed_args.tenant
+
+        return body
+    
+class ListTenantList(neutronV20.ListCommand):
+    resource = 'qosassociate'
+    log = logging.getLogger(__name__ + '.ListQosAssociate')
+
+    list_columns = ['qos_id', 'tenant_id']
