@@ -232,9 +232,6 @@ class UpdatePort(neutronV20.UpdateCommand, UpdatePortSecGroupMixin,
     def add_known_arguments(self, parser):
         self.add_arguments_secgroup(parser)
         self.add_arguments_extradhcpopt(parser)
-        
-        # Add Qos option
-        parser.add_argument('--qos', help="QoS id to associate")
 
     def args2body(self, parsed_args):
         body = {'port': {}}
