@@ -67,9 +67,9 @@ class CreateQoS(neutronV20.CreateCommand):
         parser.add_argument('--policies',
                             help='Set of policies for a QoS. Avaible policies: dscp, ingress_rate, egress_rate, burst_percent', nargs='*')
         parser.add_argument('--description', help="Description for the QoS")
-        parser.add_argument('--default', help="Ask to Matteo", 
+        parser.add_argument('--default', help="if True this policy will be used when a new port will be create. Only one default is admitted.", 
                             nargs=1, choices=['true', 'false'], required=True )
-        parser.add_argument('--public', help="Visible to all", 
+        parser.add_argument('--public', help="If true all users can see and apply this policy.", 
                             nargs=1, choices=['true', 'false'], required=True )
         parser.add_argument('--name', help="Name of QoS", required=True)
 
