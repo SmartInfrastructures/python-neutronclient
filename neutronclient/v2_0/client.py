@@ -221,6 +221,10 @@ class Client(object):
     firewall_policy_remove_path = "/fw/firewall_policies/%s/remove_rule"
     firewalls_path = "/fw/firewalls"
     firewall_path = "/fw/firewalls/%s"
+    
+    #qos
+    qos_path = "/qoses"
+    qoses_path = "/qoses/%s"
 
     # API has no way to report plurals, so we have to hard code them
     EXTED_PLURALS = {'routers': 'router',
@@ -243,7 +247,9 @@ class Client(object):
                      'firewall_policies': 'firewall_policy',
                      'firewalls': 'firewall',
                      'metering_labels': 'metering_label',
-                     'metering_label_rules': 'metering_label_rule'
+                     'metering_label_rules': 'metering_label_rule',
+                     #qos
+                     'qoses': 'qos'
                      }
     # 8192 Is the default max URI len for eventlet.wsgi.server
     MAX_URI_LEN = 8192
@@ -1109,7 +1115,43 @@ class Client(object):
         """Fetches information of a certain metering label rule."""
         return self.get(self.metering_label_rule_path %
                         (metering_label_rule), params=_params)
+        
+    #qos
+    @APIParamsCall
+    def delete_qos(self, qos):
+        return self.delete(self.qoses_path % (qos))
+    
+    @APIParamsCall
+    def create_qos(self, body=None):
+        return self.post(self.qos_path, body=body)
 
+    @APIParamsCall
+    def list_qoses(self, retrieve_all=True, **_params):
+        return self.list('qoses', self.qos_path, retrieve_all, **_params)
+        
+    @APIParamsCall
+    def list_qosassociates(self, retrieve_all=True, **_params):
+        return self.list('qosassociates', "/qosassociates", retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_qos(self, qos, **_params):
+        return self.get(self.qoses_path % (qos), params=_params)
+    
+    @APIParamsCall
+    def update_qos(self, qos, body=None):
+        """Updates a firewall."""
+        return self.put(self.qoses_path % (qos), body=body)
+    
+    @APIParamsCall
+    def create_qos_associate(self, qos_id, body=None):
+        #return self.post(self.qos_path, body=body)
+        return self.put(self.qoses_path % (qos_id), body=body)
+        
+    @APIParamsCall
+    def list_qos_associates(self, retrieve_all=True, **_params):
+        return self.list('qoses', self.qos_path, retrieve_all, **_params)
+    #qos
+    
     def __init__(self, **kwargs):
         """Initialize a new client for the Neutron v2.0 API."""
         super(Client, self).__init__()

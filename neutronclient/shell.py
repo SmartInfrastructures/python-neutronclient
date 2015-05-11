@@ -61,6 +61,8 @@ from neutronclient.openstack.common.gettextutils import _
 from neutronclient.openstack.common import strutils
 from neutronclient.version import __version__
 
+#qos
+from neutronclient.neutron.v2_0.qos import qos
 
 VERSION = '2.0'
 NEUTRON_API_VERSION = '2.0'
@@ -259,6 +261,16 @@ COMMAND_V2 = {
     'meter-label-rule-list': metering.ListMeteringLabelRule,
     'meter-label-rule-show': metering.ShowMeteringLabelRule,
     'meter-label-rule-delete': metering.DeleteMeteringLabelRule,
+    
+    #qos   
+    'qos-create': qos.CreateQoS,
+    'qos-delete': qos.DeleteQoS,
+    'qos-list': qos.ListQoS,
+    'qos-show': qos.ShowQoS,
+    'qos-update': qos.UpdateQoS,
+    'qos-associate': qos.QosAssociate,
+    'qos-disassociate': qos.QosDisassociate,
+    'qos-tenant-list': qos.ListTenantList,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
