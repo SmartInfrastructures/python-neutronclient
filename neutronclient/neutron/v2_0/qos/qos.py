@@ -120,6 +120,7 @@ class UpdateQoS(neutronV20.UpdateCommand):
     
 class QosAssociate(neutronV20.UpdateCommand):
     resource = 'qos'
+    log = logging.getLogger(__name__ + '.QoSAssociate')
     
     def add_known_arguments(self, parser):
         parser.add_argument('--tenant',
@@ -138,6 +139,7 @@ class QosAssociate(neutronV20.UpdateCommand):
 
 class QosDisassociate(neutronV20.UpdateCommand):
     resource = 'qos'
+    log = logging.getLogger(__name__ + '.QoSDisassociate')
     
     def add_known_arguments(self, parser):
         parser.add_argument('--tenant',
